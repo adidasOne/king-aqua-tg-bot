@@ -1,2 +1,4 @@
 credentials.json
 credentials.template.json
+.gitsecret/keys/random_seed
+!*.secret
