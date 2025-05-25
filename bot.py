@@ -1,6 +1,7 @@
 import logging
 import asyncio
 from aiogram import Bot, Dispatcher, types
+from aiogram.filters import CommandStart, Command
 
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
@@ -23,10 +24,10 @@ ORDERS_SHEET_NAME = 'Заказы'
 # ====== Инициализация бота =======
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TELEGRAM_TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher()
 
 # ====== Команда /start =======
-@dp.message_handler(commands=['start'])
+@dp.message(CommandStart())
 async def cmd_start(message: types.Message):
     await message.answer(
         "Привет! Я бот службы доставки King Aqua.\n"
@@ -34,13 +35,13 @@ async def cmd_start(message: types.Message):
     )
 
 # ====== Команда /new_order =======
-@dp.message_handler(commands=['new_order'])
+@dp.message(Command('new_order'))
 async def cmd_new_order(message: types.Message):
     await message.answer("Отправь данные заказа в формате:\n"
                          "ФИО клиента; Телефон; Адрес; Кол-во бутылей; Стоимость бутыля")
 
     # Ждем следующий ответ с данными
-    @dp.message_handler()
+    @dp.message()
     async def process_order(msg: types.Message):
         try:
             data = msg.text.split(';')
