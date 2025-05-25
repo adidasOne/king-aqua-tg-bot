@@ -1,7 +1,6 @@
 import logging
 import asyncio
 from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
 
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
@@ -87,4 +86,4 @@ async def cmd_new_order(message: types.Message):
 
 # ====== Запуск бота =======
 if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
+    asyncio.run(dp.start_polling(bot))
